@@ -16,7 +16,7 @@ def round_generation():
     live = quest_list[level][0]
     word = quest_list[level][word]
 
-    return {'word':word, 'live':live }
+    return {'word':word, 'live':live, 'chance_col': live }
 
 def hide_word(word):
     secret = '*' * len(word)
@@ -33,12 +33,15 @@ def game_over(array):
                 word = array['word']
         ))
     else:
-        print('\n===========\nКруто, у тебя ушло всего {daed_live} жизней'.format(daed_live=array['move']-len(list(array['word']))))
+        print('\n===========\nКруто, количество потраченых жизней {daed_live} '.format(daed_live=array['chance_col'] - array['live']))
         print('Слово {}'.format(str(array['word']).upper()))
 
 def check_variant(array, letter):
     if len(letter) > 1 or not letter.isalpha():
         print('Ты втираешь мне какую-то дичь, соберись!')
+        return array
+    elif letter in [r'[а-я][А-Я]']:
+        print('Переключи раскладку клавиатуры')
         return array
     elif letter in array['word']:
         array['player_letter'] += letter
