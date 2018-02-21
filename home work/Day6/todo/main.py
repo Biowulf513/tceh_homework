@@ -13,8 +13,8 @@ from commands import (
     ListCommand,
     NewCommand,
     ExitCommand,
-    # DoneCommand,
-    # UndoneCommand,
+    DoneCommand,
+    UnDoneCommand,
     UserExitException,
 )
 from models import (
@@ -48,7 +48,8 @@ def get_routes():
         ListCommand.label(): ListCommand,
         NewCommand.label(): NewCommand,
         ExitCommand.label(): ExitCommand,
-        # DoneCommand.label(): DoneCommand,
+        DoneCommand.label(): DoneCommand,
+        UnDoneCommand.label(): UnDoneCommand,
     }
 
 
@@ -87,8 +88,9 @@ def parse_user_input():
         {
             ListCommand.label(): ListCommand,
             NewCommand.label(): NewCommand,
+            DoneCommand.label(): DoneCommand,
+            UnDoneCommand.label(): UnDoneCommand,
             ExitCommand.label(): ExitCommand,
-            # DoneCommand.label(): DoneCommand,
         }.keys()
     )
     return input_function(message)

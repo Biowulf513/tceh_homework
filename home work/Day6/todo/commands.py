@@ -32,9 +32,9 @@ class ListCommand(BaseCommand):
         if len(objects) == 0:
             print('There are no items in storage.')
             return
-
+        done_status = {True : '+', False : '-'}
         for index, obj in enumerate(objects):
-            print('{}: {}'.format(index, str(obj)))
+            print('{}: {} {}'.format(index, str(obj), done_status[obj.done]))
 
 
 class NewCommand(BaseCommand):
@@ -98,6 +98,37 @@ class NewCommand(BaseCommand):
         print()
         return new_object
 
+class DoneCommand(ListCommand):
+    value = True
+
+    @staticmethod
+    def label():
+        return 'done'
+
+    def perform(self, objects, *args, **kwargs):
+
+        super().perform(objects)
+        self.change_status(objects)
+        super().perform(objects)
+
+
+    def change_status(self, objects):
+        while True:
+            try:
+                done_obj = objects[int(input('Select obj number: '))]
+            except Exception:
+                print('wrong input')
+                continue
+            else:
+                done_obj.done = self.value
+                break
+
+class UnDoneCommand(DoneCommand):
+    value = False
+
+    @staticmethod
+    def label():
+        return 'undone'
 
 class ExitCommand(BaseCommand):
     @staticmethod

@@ -21,6 +21,7 @@ class Storage(object):  # storage = Storge()
 class BaseItem(object):
     def __init__(self, heading):
         self.heading = heading
+        self.done = False
 
     def __repr__(self):
         return self.__class__
