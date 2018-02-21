@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+__author__ = 'sobolevn'
+
+
 __all__ = ('get_input_function', )
 
 

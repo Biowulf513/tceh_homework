@@ -13,14 +13,16 @@ from commands import (
     ListCommand,
     NewCommand,
     ExitCommand,
-    DoneCommand,
-    UndoneCommand,
+    # DoneCommand,
+    # UndoneCommand,
     UserExitException,
 )
 from models import (
     Storage,
 )
 from utils import get_input_function
+
+__author__ = 'sobolevn'
 
 
 def get_routes():
@@ -45,9 +47,8 @@ def get_routes():
     return {
         ListCommand.label(): ListCommand,
         NewCommand.label(): NewCommand,
-        DoneCommand.label(): DoneCommand,
-        UndoneCommand.label(): UndoneCommand,
         ExitCommand.label(): ExitCommand,
+        # DoneCommand.label(): DoneCommand,
     }
 
 
@@ -86,9 +87,8 @@ def parse_user_input():
         {
             ListCommand.label(): ListCommand,
             NewCommand.label(): NewCommand,
-            DoneCommand.label(): DoneCommand,
-            UndoneCommand.label(): UndoneCommand,
             ExitCommand.label(): ExitCommand,
+            # DoneCommand.label(): DoneCommand,
         }.keys()
     )
     return input_function(message)
