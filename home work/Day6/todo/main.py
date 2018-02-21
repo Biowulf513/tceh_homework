@@ -62,9 +62,15 @@ def perform_command(command):
 
     command = command.lower()
     routes = get_routes()
+    value = None
 
+    for route in routes :
+        if route[:len(command)] == command:
+            value = route
+            break
     try:
-        command_class = routes[command]
+
+        command_class = routes[value]
         command_inst = command_class()
 
         storage = Storage()
