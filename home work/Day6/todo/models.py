@@ -60,3 +60,21 @@ class ToBuyItem(BaseItem):
         heading = input_function('Input heading: ')
         price = input_function('Input price: ')
         return ToBuyItem(heading, price)
+
+class ToReadItem(BaseItem):
+    def __init__(self, heading, url):
+        super(ToReadItem, self).__init__(heading)
+        self.url = url
+
+    def __str__(self):
+        return 'ToRead: {} {}'.format(
+            self.heading,
+            self.url,
+        )
+
+    @classmethod
+    def construct(cls):
+        input_function = get_input_function()
+        heading = input_function('Input heading: ')
+        price = input_function('Input url: ')
+        return ToBuyItem(heading, price)
