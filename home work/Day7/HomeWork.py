@@ -8,6 +8,7 @@
 - Реализовать декоторатор, который будет логгировать процесс выполнения функции: создан декоратор, начато выполнение функции, закончено выполнение функции
 - Реализовать декоратор, который будет перехватывать все исключения в функции. Если они случились, нужно просто писать в консоль сообщение об ошибке
 '''
+# Написать декоратор, который отменяет выполнение любой декорированной функций и будет писать в консоль: ИМЯ_ФУНКЦИИ is canceled!
 def cancel_it(func):
     def cancel(text):
         print('{} is canceled!'.format(func.__name__))
@@ -18,8 +19,27 @@ def cancel_it(func):
 def mega_function(letter):
     print(input('enter value: ').upper() + str(letter) * 5)
 
-mega_function('!')
+# Реализовать декоратор, который измеряет скорость выполнения функций.
+# def speedtest(func):
+#     import time
+#     def run_time():
+#         start = time.time()
+#         func()
+#         finish = time.time()
+#         print('-----------------')
+#         print('run_time = {}'.format(finish - start))
+#     return run_time
 
+def slow_programs(iter_col):
+    listing = (int(i) for i in range (iter_col))
+    print(list(''.join(map(lambda x:x, listing))))
+
+
+# 1
+# mega_function('!')
+
+# 2
+slow_programs(100)
 
 
 '''
