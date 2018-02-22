@@ -7,7 +7,6 @@ from utils import get_input_function
 
 class Storage(object):  # storage = Storge()
     obj = None
-
     items = None
 
     @classmethod

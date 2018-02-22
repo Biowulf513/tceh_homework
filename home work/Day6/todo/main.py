@@ -69,7 +69,6 @@ def perform_command(command):
             value = route
             break
     try:
-
         command_class = routes[value]
         command_inst = command_class()
 
