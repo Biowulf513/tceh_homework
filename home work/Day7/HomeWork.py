@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 def decorator(func):
     def wrap():
         print('----------')
@@ -70,7 +71,7 @@ def decorator5(func):
 
     return wrap()
 
-
+# main
 @decorator5
 def test():
     message = 5/'yuiyui'
@@ -80,21 +81,34 @@ def test():
     return message
 
 
-
-
-
-
-
-
 '''
 *ЗАДАЧИ НА MAP/FILTER/REDUCE (И LAMBDA, ЕСЛИ НУЖНО)
 
-- При помощи map посчитать остаток от деление на 5 для чисел: [1, 4, 5, 30, 99]
-- При помощи map превратить все числа из массива [3, 4, 90, -2] в строки
-- При помощи filter убрать из массива ['some', 1, 'v', 40, '3a', str] все строки
++ При помощи map посчитать остаток от деление на 5 для чисел: [1, 4, 5, 30, 99]
++ При помощи map превратить все числа из массива [3, 4, 90, -2] в строки
++ При помощи filter убрать из массива ['some', 1, 'v', 40, '3a', str] все строки
 - При помощи reduce посчитать количество букв в словах: ['some', 'other', 'value']
+'''
+# + При помощи map посчитать остаток от деление на 5 для чисел: [1, 4, 5, 30, 99]
+number_typle = [1, 4, 5, 30, 99]
+solution = map(lambda x: x % 5, number_typle)
+print(1, list(solution))
 
+# + При помощи map превратить все числа из массива [3, 4, 90, -2] в строки
+number_array = [3, 4, 90, -2]
+print(2, list(map(lambda x: str(x), number_array)))
 
+# + При помощи filter убрать из массива ['some', 1, 'v', 40, '3a', str] все строки
+filter_array = ['some', 1, 'v', 40, '3a', str]
+clear_filter_array = list(filter(lambda x: not isinstance(x, str), filter_array))
+print(3, clear_filter_array)
+
+# - При помощи reduce посчитать количество букв в словах:
+#  ['some', 'other', 'value']
+from functools import reduce
+print(reduce(lambda x, y: x + y, list(map(lambda x: len(x), ['some', 'other', 'value']))))
+
+'''
 *CЛОЖНОЕ ДОМАШНЕЕ ЗАДАНИЕ
 
 **Технические требования:
