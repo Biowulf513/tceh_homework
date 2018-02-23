@@ -23,8 +23,8 @@ def decorator1(func):
         raise Exception('function {} is canceled!'.format(func.__name__))
 
     return wrap
-# + Реализовать декоратор, который измеряет скорость выполнения функций.
 
+# + Реализовать декоратор, который измеряет скорость выполнения функций.
 def decorator2(func):
     def wrap():
         import datetime, time
@@ -35,12 +35,26 @@ def decorator2(func):
 
     return wrap
 
+# + Реализовать декоратор, который будет считать, сколько раз выполнялась функция
+def decorator3(func):
+    run_list = []
 
-@decorator2
+    def wrap():
+        func_name = str(func.__name__)
+        run_list.append(func_name)
+        func_col = run_list.count(func_name)
+        print(func())
+        print('это {} эапуск {}'.format(func_col, func_name))
+
+    return wrap
+
+
+@decorator3
 def test():
     return 'somefing'
 
-test()
+
+
 
 
 
