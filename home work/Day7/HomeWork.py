@@ -1,4 +1,13 @@
 # -*- coding: utf-8 -*-
+def decorator(func):
+    def wrap():
+        print('----------')
+        print('{} in decorator1'.format(func.__name__))
+        print(func())
+        print('----------')
+
+    return wrap
+
 '''
 *ЗАДАЧИ НА ДЕКОРАТОРЫ
 
@@ -8,38 +17,21 @@
 - Реализовать декоторатор, который будет логгировать процесс выполнения функции: создан декоратор, начато выполнение функции, закончено выполнение функции
 - Реализовать декоратор, который будет перехватывать все исключения в функции. Если они случились, нужно просто писать в консоль сообщение об ошибке
 '''
-# Написать декоратор, который отменяет выполнение любой декорированной функций и будет писать в консоль: ИМЯ_ФУНКЦИИ is canceled!
-def cancel_it(func):
-    def cancel(text):
-        print('{} is canceled!'.format(func.__name__))
+# - Написать декоратор, который отменяет выполнение любой декорированной функций и будет писать в консоль: ИМЯ_ФУНКЦИИ is canceled!
 
-    return cancel
+def decorator1(func):
+    def wrap():
+        raise Exception('function {} is canceled!'.format(func.__name__))
 
-@cancel_it
-def mega_function(letter):
-    print(input('enter value: ').upper() + str(letter) * 5)
+    return wrap
 
-# Реализовать декоратор, который измеряет скорость выполнения функций.
-# def speedtest(func):
-#     import time
-#     def run_time():
-#         start = time.time()
-#         func()
-#         finish = time.time()
-#         print('-----------------')
-#         print('run_time = {}'.format(finish - start))
-#     return run_time
+@decorator1
+def test():
+    return 'somefing'
 
-def slow_programs(iter_col):
-    listing = (int(i) for i in range (iter_col))
-    print(list(''.join(map(lambda x:x, listing))))
+test()
 
 
-# 1
-# mega_function('!')
-
-# 2
-slow_programs(100)
 
 
 '''
