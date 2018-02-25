@@ -42,6 +42,18 @@ def my_range(col):
     # time.sleep(5)
     return list(x for x in range(col))
 
-my_range(1)
+# my_range(1)
 
-# пример 2
+# Генераторы
+
+def get_numbers(start, end, step):
+    while start < end:
+        yield start
+        start += step
+
+
+s = get_numbers(0, 1000, 10)
+print(next(s))
+print(next(s))
+print(next(s))
+print(list(s))
