@@ -2,7 +2,7 @@
 
 class Board(object):
     def __init__(self):
-        self.board = Board.board_generator(self)
+        self.board = list(self.board_generator())
 
     # Генераор игровой доски
     def board_generator(self):
@@ -17,3 +17,12 @@ class Board(object):
     def show_board(self):
         for line in self.board:
             print(' '.join(line))
+
+    def position_in_board(self, x, y):
+        self.board[y][x] = '*'
+        self.show_board()
+
+
+# a = Board()
+# a.show_board()
+# a.position_in_board(1,1)
