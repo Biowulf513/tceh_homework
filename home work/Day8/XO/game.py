@@ -22,7 +22,7 @@ class Game:
             print(position)
             if self.check_position(position):
                 player.new_motion(list([position[0], position[-1]]))
-                print(2, player.name, 3, player.motion)
+                print(2, player.name, 3, player.motion_array)
                 break
             else:
                 continue

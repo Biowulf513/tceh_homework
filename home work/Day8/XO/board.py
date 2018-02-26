@@ -18,8 +18,8 @@ class Board(object):
         for line in self.board:
             print(' '.join(line))
 
-    def position_in_board(self, x, y):
-        self.board[y][x] = '*'
+    def positions_in_board(self):
+
         self.show_board()
 
 

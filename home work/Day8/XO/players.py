@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 class Player:
     col_player = 0
+    motion_array = []
     badge_variants = ['X', 'O']
     def __init__(self):
         self.name = input('Введите имя игрока: ')
-        self.motion_array = []
+        Player.motion_array.append([self.name])
         Player.badge(self)
         Player.col_player += 1
 
@@ -16,5 +17,5 @@ class Player:
             self.badge = Player.badge_variants[0]
 
     def new_motion(self, motion):
-        self.motion_array.append(motion)
-
+        print(Player.motion_array)
+        # Player.motion_array[self.name].append(motion)

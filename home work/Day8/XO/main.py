@@ -13,6 +13,7 @@ player2 = Player()
 # ход игроков
 raund = Game(board, list([player1, player2]))
 while True:
+    board.show_board()
     raund.player_motion()
 #   проверка не занята ли позиция
 #   установка знака на позицию
