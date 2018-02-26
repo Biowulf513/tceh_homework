@@ -17,6 +17,3 @@ class Board(object):
     def show_board(self):
         for line in self.board:
             print(' '.join(line))
-
-asd = Board()
-asd.show_board()
