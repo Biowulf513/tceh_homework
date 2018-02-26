@@ -4,6 +4,7 @@ class Player:
     badge_variants = ['X', 'O']
     def __init__(self):
         self.name = input('Введите имя игрока: ')
+        self.motion_array = []
         Player.badge(self)
         Player.col_player += 1
 
@@ -13,3 +14,7 @@ class Player:
             self.badge = Player.badge_variants.pop(int(input('0 : {}, 1 : {}: '.format(Player.badge_variants[0], Player.badge_variants[1]))))
         else:
             self.badge = Player.badge_variants[0]
+
+    def new_motion(self, motion):
+        self.motion_array.append(motion)
+
