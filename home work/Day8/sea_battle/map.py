@@ -3,7 +3,6 @@
 
 class map:
 
-
     def __init__(self):
         self.graphic_array = {'none':'_', 'hit':'▪', 'dead':'⨯', 'ship':'▩', 'shadow':'⬫' }
         self.long_x = 10
@@ -29,10 +28,6 @@ class map:
     def show(self):
         for line in self.map_array:
             print(' '.join(line))
-
-    # def
-
-
 
 mappi = map()
 mappi.create()
