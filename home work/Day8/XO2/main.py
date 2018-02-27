@@ -23,6 +23,7 @@
 
 class XO:
     move_counter = 0
+    finish = False
     win_result_list = [[[1, 1], [1, 2], [1, 3]],
                        [[2, 1], [2, 2], [2, 3]],
                        [[3, 1], [3, 2], [3, 3]],
@@ -41,18 +42,19 @@ class XO:
 
     # ход игрока
     def player_turn(self):
-        while True:
-            self.board.show_board()
-            self.active_player = self.players_list[XO.move_counter % 2]
-            print('Ходит {}'.format(self.active_player.name))
-            position = self.check_turn(input('Введите позицию хода: '))
-            if self.board.check_position(position):  # Проверка ячейки на занятость
-                self.add_user_position(position)
-                self.check_win_result(position)
-                XO.move_counter += 1
-                break
-            else:
-                continue
+        # while True:
+        self.board.show_board()
+        self.active_player = self.players_list[XO.move_counter % 2]
+        print('Ходит {}'.format(self.active_player.name))
+
+        position = self.check_turn(input('Введите позицию хода: '))
+        if self.board.check_position(position):  # Проверка ячейки на занятость
+            self.add_user_position(position)
+            self.check_win_result(position)
+            XO.move_counter += 1
+        #     break
+        # else:
+        #     continue
 
     # Добавление символа на игровую доску
     def add_user_position(self, position):
@@ -78,15 +80,20 @@ class XO:
 
         for result_list in XO.win_result_list:
             if position in result_list:
-                if len(result_list) >= 6:
-                    self.winner_detected(result_list)
                 # если комбинация помечена соперником удаляем её и больше не проверяем
-                elif len(result_list) > 3 and result_list[-1] != self.active_player.sign:
+                if len(result_list) > 3 and result_list[-1] != self.active_player.sign:
                     XO.win_result_list.remove(result_list)
                 else:
                     result_list.append(self.active_player.sign)
+                    if len(result_list) >= 6:
+                        self.winner_detected()
+                        break
 
-        # print(XO.win_result_list)
+        # print(1, XO.win_result_list)
+
+    def winner_detected(self):
+        print('winner {}'.format(self.active_player.name))
+
 
 
 class Board:
@@ -126,3 +133,6 @@ if __name__ == '__main__':
     game1 = XO()
     while True:
         game1.player_turn()
+        if game1.finish == True:
+            game1.winner_detected()
+            break
