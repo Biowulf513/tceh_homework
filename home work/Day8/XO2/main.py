@@ -11,7 +11,7 @@
         +преобразование буквенных значений в числовые
         +проверка не занята ли позиция
     
-    установка знака на позицию
+    +установка знака на позицию
     проверка не выиграл ли игрок этим ходом
     ход другого игрока
     сообщение о победе
@@ -27,11 +27,20 @@ class XO:
 
     # ход игрока
     def player_turn(self):
+        while True:
+            self.board.show_board()
+            self.active_player = self.players_list[XO.move_counter % 2]
+            print('Ходит {}'.format(self.active_player.name))
+            position = self.check_turn(input('Введите позицию хода: '))
+            if self.board.check_position(position):  # Проверка ячейки на занятость
+                self.add_user_position(position)
+            else:
+                continue
+
+    # Добавление символа на игровую доску
+    def add_user_position(self, position):
+        self.board.board_list[position['x']][position['y']] = self.active_player.sign
         self.board.show_board()
-        active_player = self.players_list[XO.move_counter % 2]
-        print('Ходит {}'.format(active_player.name))
-        position = self.check_turn(input('Введите позицию хода: '))
-        self.board.check_position(position)  # Проверка ячейки на занятость
 
     # провека вводимого значения
     # преобразование буквенных значений в числовые
@@ -50,7 +59,7 @@ class XO:
 
 class Board:
     def __init__(self):
-        self.board = list(self.board_generator())
+        self.board_list = list(self.board_generator())
 
     # Генераор игровой доски
     def board_generator(self):
@@ -64,16 +73,16 @@ class Board:
 
     # Отображение игровой доски
     def show_board(self):
-        for line in self.board:
+        for line in self.board_list:
             print(' '.join(line))
 
     # Проверка ячейки на занятость
-    def check_position(self, dict):
-        if self.board[dict['x']][dict['y']] != '_':
+    def check_position(self, position):
+        if self.board_list[position['x']][position['y']] != '_':
+            print('Увы данная позиция не свободна')
             return False
         else:
-            print('ok')
-
+            return True
 
 class Player:
     sign_list = ['X', 'O']
