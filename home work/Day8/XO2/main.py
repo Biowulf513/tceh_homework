@@ -4,7 +4,7 @@
 + создаём игроков
     + создание объекта игрок1
     + создание объекта игрок2
-отображение поля
++ отображение поля
 ход игроков
     ввод позиции
             провека вводимого значения
@@ -30,6 +30,10 @@ class XO:
             line.insert(0, y)
             yield line
 
+    def show_board(self):
+        for line in self.board:
+            print(' '.join(line))
+
 class Player:
     sign_list = ['X', 'O']
     def __init__(self):
@@ -42,7 +46,10 @@ class Player:
 #
 game1 = XO()
 print(game1.board)
+
 player1 = Player()
 print('name', player1.name, 'sign', player1.sign)
 player2 = Player()
 print('name', player2.name, 'sign', player2.sign)
+
+game1.show_board()
