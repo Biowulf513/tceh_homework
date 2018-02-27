@@ -12,9 +12,9 @@
         +проверка не занята ли позиция
     
     +установка знака на позицию
-    проверка не выиграл ли игрок этим ходом
-    ход другого игрока
-    сообщение о победе
+        проверка не выиграл ли игрок этим ходом
+    +ход другого игрока
+сообщение о победе
 '''
 
 class XO:
@@ -34,6 +34,8 @@ class XO:
             position = self.check_turn(input('Введите позицию хода: '))
             if self.board.check_position(position):  # Проверка ячейки на занятость
                 self.add_user_position(position)
+                XO.move_counter += 1
+                break
             else:
                 continue
 
@@ -88,8 +90,9 @@ class Player:
     sign_list = ['X', 'O']
     def __init__(self):
         self.name = input('Введите имя игрока: ')
-        self.sign = Player.sign_list[0]
+        self.sign = Player.sign_list.pop(0)
 
 if __name__ == '__main__':
     game1 = XO()
-    game1.player_turn()
+    while True:
+        game1.player_turn()
