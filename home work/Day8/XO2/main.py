@@ -37,8 +37,8 @@ class XO:
 
     def __init__(self):
         self.board = Board()
-        self.player1 = Player()
-        self.player2 = Player()
+        self.player1 = Player(1)
+        self.player2 = Player(2)
         self.players_list = list([self.player1, self.player2])
 
     # ход игрока
@@ -130,16 +130,19 @@ class Board:
 
     # Проверка ячейки на занятость
     def check_position(self, position):
-        if self.board_list[position[1]][position[0]] != '_':
-            print('Увы данная позиция не свободна')
-            return False
-        else:
-            return True
+        try:
+            if self.board_list[position[1]][position[0]] != '_':
+                print('Увы данная позиция не свободна')
+                return False
+            else:
+                return True
+        except (IndexError, TypeError):
+            print('Значение не входит в допустимые рамки')
 
 class Player:
     sign_list = ['X', 'O']
-    def __init__(self):
-        self.name = input('Введите имя игрока: ')
+    def __init__(self, number):
+        self.name = input('Введите имя игрока{}: '.format(number))
         self.sign = Player.sign_list.pop(0)
 
 if __name__ == '__main__':
