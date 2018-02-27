@@ -5,20 +5,34 @@
     + создание объекта игрок1
     + создание объекта игрок2
 + отображение поля
-ход игроков
++ход игроков
     +ввод позиции
         +провека вводимого значения
         +преобразование буквенных значений в числовые
         +проверка не занята ли позиция
     
     +установка знака на позицию
-        проверка не выиграл ли игрок этим ходом
+    +добавление символа в список победных комбинаций
+    +проверка всех комбинаций с данной позицией
+    +если комбинация чиста или в ней уже есть метка игрока: записать на позицию в комбинации символ игрока
+    +если в комбинации есть метка другого игрока удалить комбинацию из списка
+    
     +ход другого игрока
 сообщение о победе
 '''
 
 class XO:
     move_counter = 0
+    win_result_list = [[[1, 1], [1, 2], [1, 3]],
+                       [[2, 1], [2, 2], [2, 3]],
+                       [[3, 1], [3, 2], [3, 3]],
+                       [[1, 1], [2, 1], [3, 1]],
+                       [[1, 2], [2, 2], [3, 2]],
+                       [[1, 3], [2, 3], [3, 3]],
+                       [[1, 1], [2, 2], [3, 3]],
+                       [[1, 3], [2, 2], [3, 1]],
+                       ]
+
     def __init__(self):
         self.board = Board()
         self.player1 = Player()
@@ -34,6 +48,7 @@ class XO:
             position = self.check_turn(input('Введите позицию хода: '))
             if self.board.check_position(position):  # Проверка ячейки на занятость
                 self.add_user_position(position)
+                self.check_win_result(position)
                 XO.move_counter += 1
                 break
             else:
@@ -41,7 +56,7 @@ class XO:
 
     # Добавление символа на игровую доску
     def add_user_position(self, position):
-        self.board.board_list[position['x']][position['y']] = self.active_player.sign
+        self.board.board_list[position[0]][position[1]] = self.active_player.sign
         self.board.show_board()
 
     # провека вводимого значения
@@ -49,15 +64,30 @@ class XO:
     def check_turn(self, position):
         x_position_dict = {'a':1, 'b':2, 'c':3}
         try:
-            correct_position = {}
-            correct_position.update({'x':x_position_dict[position[0].lower()]})
-            correct_position.update(dict( y = int(position[-1])))
+            correct_position = []
+            correct_position.insert(0, x_position_dict[position[0].lower()])
+            correct_position.insert(1, int(position[-1]))
         except KeyError as E:
             print('Ты ввёл неверное значение столбика, что за {} ?'.format(E))
         except ValueError as E:
             print('Ты ввёл неверное строчки, что за {} ?'.format(E.args))
         else:
             return correct_position
+
+    def check_win_result(self, position):
+
+        for result_list in XO.win_result_list:
+            if position in result_list:
+                if len(result_list) >= 6:
+                    self.winner_detected(result_list)
+                # если комбинация помечена соперником удаляем её и больше не проверяем
+                elif len(result_list) > 3 and result_list[-1] != self.active_player.sign:
+                    XO.win_result_list.remove(result_list)
+                else:
+                    result_list.append(self.active_player.sign)
+
+        # print(XO.win_result_list)
+
 
 class Board:
     def __init__(self):
@@ -80,7 +110,7 @@ class Board:
 
     # Проверка ячейки на занятость
     def check_position(self, position):
-        if self.board_list[position['x']][position['y']] != '_':
+        if self.board_list[position[0]][position[1]] != '_':
             print('Увы данная позиция не свободна')
             return False
         else:
