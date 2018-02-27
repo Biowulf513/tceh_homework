@@ -6,9 +6,10 @@
     + создание объекта игрок2
 + отображение поля
 ход игроков
-    ввод позиции
-            провека вводимого значения
-        проверка не занята ли позиция
+    +ввод позиции
+        +провека вводимого значения
+        +преобразование буквенных значений в числовые
+        +проверка не занята ли позиция
     
     установка знака на позицию
     проверка не выиграл ли игрок этим ходом
@@ -17,6 +18,37 @@
 '''
 
 class XO:
+    move_counter = 0
+    def __init__(self):
+        self.board = Board()
+        self.player1 = Player()
+        self.player2 = Player()
+        self.players_list = list([self.player1, self.player2])
+
+    # ход игрока
+    def player_turn(self):
+        self.board.show_board()
+        active_player = self.players_list[XO.move_counter % 2]
+        print('Ходит {}'.format(active_player.name))
+        position = self.check_turn(input('Введите позицию хода: '))
+        self.board.check_position(position)  # Проверка ячейки на занятость
+
+    # провека вводимого значения
+    # преобразование буквенных значений в числовые
+    def check_turn(self, position):
+        x_position_dict = {'a':1, 'b':2, 'c':3}
+        try:
+            correct_position = {}
+            correct_position.update({'x':x_position_dict[position[0].lower()]})
+            correct_position.update(dict( y = int(position[-1])))
+        except KeyError as E:
+            print('Ты ввёл неверное значение столбика, что за {} ?'.format(E))
+        except ValueError as E:
+            print('Ты ввёл неверное строчки, что за {} ?'.format(E.args))
+        else:
+            return correct_position
+
+class Board:
     def __init__(self):
         self.board = list(self.board_generator())
 
@@ -30,9 +62,18 @@ class XO:
             line.insert(0, y)
             yield line
 
+    # Отображение игровой доски
     def show_board(self):
         for line in self.board:
             print(' '.join(line))
+
+    # Проверка ячейки на занятость
+    def check_position(self, dict):
+        if self.board[dict['x']][dict['y']] != '_':
+            return False
+        else:
+            print('ok')
+
 
 class Player:
     sign_list = ['X', 'O']
@@ -40,16 +81,6 @@ class Player:
         self.name = input('Введите имя игрока: ')
         self.sign = Player.sign_list[0]
 
-
-#
-#
-#
-game1 = XO()
-print(game1.board)
-
-player1 = Player()
-print('name', player1.name, 'sign', player1.sign)
-player2 = Player()
-print('name', player2.name, 'sign', player2.sign)
-
-game1.show_board()
+if __name__ == '__main__':
+    game1 = XO()
+    game1.player_turn()
