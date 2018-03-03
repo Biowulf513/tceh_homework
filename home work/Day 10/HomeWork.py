@@ -1,9 +1,16 @@
 # -*- coding: utf-8 -*-
 #Реализовать на Flask
-from flask import Flask, json
+from flask import Flask, json, request
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, validators
 # from json import dumps, loads
 
 app = Flask(__name__)
+app.config.update(
+    DEBUG=True,
+    SECRET_KEY='This key must be secret!',
+    WTF_CSRF_ENABLED=False,
+)
 
 #1. По адресу /locales должен возвращаться массив в формате json с тремя локалями: ['ru', 'en', 'it']
 
@@ -39,9 +46,9 @@ def local_lson():
 
 #2. По адресу /sum/<int:first>/<int:second> должен получать в url-адресе два числа, возвращать их сумму
 
-@app.route('/sum/<first>/<second>')
+@app.route('/sum/<int:first>/<int:second>')
 def url_summ(first, second):
-    return str(int(first) + int(second))
+    return str(first + second)
 
 #3. По адресу /greet/<user_name> должен получать имя пользователя, возвращать текст 'Hello, имя_которое_прислали'
 @app.route('/greet/<user_name>')
@@ -59,6 +66,35 @@ def hello(user_name):
  "errors" - список ошибок, если они есть,
  или пустой список.
 '''
+class ContactForm(FlaskForm):
+    # email = StringField(label='E-mail', validators=[
+    #     validators.Length(min=6, max=35),
+    #     validators.Email()
+    # ])
+    password = PasswordField('New Password', [
+        validators.DataRequired(),
+        validators.EqualTo('confirm', message='Passwords must match')
+    ])
+    # confirm = PasswordField('Repeat Password')
+
+@app.route('/form/user', methods=['GET', 'POST'])
+def post_user():
+    if request.method == 'POST':
+        print(request.form)
+        form = ContactForm(request.form)
+        print(form.validate())
+
+        if form.validate():
+            return ('valid', 200)
+        else:
+            return ('invalid', 400)
+
+    else:
+        return 'POST запрос с параментрами:\
+        email, \
+        пароль, \
+        подтверждение пароля. '
+
 #5. По адресу /serve/<path:filename> должен возвращать содержимое запрашиваемого файла из папки ./files. Файлы можно туда положить любые текстовые. А если такого нет - 404.
 
 if __name__ == '__main__':
