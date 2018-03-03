@@ -3,6 +3,7 @@
 from flask import Flask, json, request
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, validators
+import os
 # from json import dumps, loads
 
 app = Flask(__name__)
@@ -105,6 +106,21 @@ def post_user():
         email, пароль, подтверждение пароля. '
 
 #5. По адресу /serve/<path:filename> должен возвращать содержимое запрашиваемого файла из папки ./files. Файлы можно туда положить любые текстовые. А если такого нет - 404.
+
+@app.route('/serve/<path:filename>')
+def serve(filename):
+
+    file_dir = '\\'.join(filename.split(r'/')[0:-1])
+    try:
+        with open(filename, mode='r') as f:
+            return f.read()
+    except FileNotFoundError as e:
+
+        response = app.response_class(
+            response='Error 404, {}'.format(e.strerror),
+            status=404,
+        )
+        return response
 
 if __name__ == '__main__':
     app.run()
