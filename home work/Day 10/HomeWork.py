@@ -56,44 +56,53 @@ def hello(user_name):
     return 'Hello, {}'.format(user_name)
 
 '''4. По адресу /form/user должен принимать 
- POST запрос с параментрами: 
- email, 
- пароль,
- подтверждение пароля. 
+ POST запрос с параментрами: email, пароль, подтверждение пароля. 
  
- Необходимо валидировать email, что обязательно присутствует, валидировать пароли, что они минимум 6 символов в длину и совпадают. Возрващать пользователю json вида: 
+ Необходимо валидировать email, что обязательно присутствует, 
+ валидировать пароли, что они минимум 6 символов в длину 
+ и совпадают. Возрващать пользователю json вида: 
  "status" - 0 или 1 (если ошибка валидации),
- "errors" - список ошибок, если они есть,
- или пустой список.
+ "errors" - список ошибок, если они есть, или пустой список.
 '''
 class ContactForm(FlaskForm):
-    # email = StringField(label='E-mail', validators=[
-    #     validators.Length(min=6, max=35),
-    #     validators.Email()
-    # ])
+    email = StringField(label='E-mail', validators=[
+        validators.Length(min=6, max=35),
+        validators.Email()
+    ])
     password = PasswordField('New Password', [
+        validators.Length(min=6),
         validators.DataRequired(),
         validators.EqualTo('confirm', message='Passwords must match')
     ])
-    # confirm = PasswordField('Repeat Password')
+    confirm = PasswordField('Repeat Password')
 
 @app.route('/form/user', methods=['GET', 'POST'])
 def post_user():
     if request.method == 'POST':
+        state = [{'status': None}, {'errors': None}]
+        status = [400, 200]
         print(request.form)
         form = ContactForm(request.form)
         print(form.validate())
 
         if form.validate():
-            return ('valid', 200)
+            state[0]['status'] = 1
+
         else:
-            return ('invalid', 400)
+            state[0]['status'] = 0
+            state[1]['errors'] = dict(form.errors)
+
+        response = app.response_class(
+            response=json.dumps(state, sort_keys=True, indent=4),
+            status=status[state[0]['status']],
+            mimetype='application/json'
+        )
+
+        return response
 
     else:
         return 'POST запрос с параментрами:\
-        email, \
-        пароль, \
-        подтверждение пароля. '
+        email, пароль, подтверждение пароля. '
 
 #5. По адресу /serve/<path:filename> должен возвращать содержимое запрашиваемого файла из папки ./files. Файлы можно туда положить любые текстовые. А если такого нет - 404.
 
