@@ -18,6 +18,27 @@ from flask_wtf import Form
 from wtforms import IntegerField, validators
 from random import seed, randint
 
+class Riddler:
+    '''
+    Класс Riddler (singleton) будет загадывать числа
+    '''
+    __instance = None
+
+    number = None
+
+    def __new__(cls):
+        if Riddler.__instance is None:
+            Riddler.__instance = object.__new__(cls)
+
+        return Riddler.__instance
+
+    @classmethod
+    def new_number(cls, limit):
+        cls.number = randint(1, limit)
+        print('Загадано число', cls.number)
+
+
+
 app = Flask(__name__)
 app.config.update(
     DEBUG = True,
@@ -31,10 +52,12 @@ app.config.update(
 # print(environ)
 
 
+
 # Пользователь по GET запросу на адрес / получает
 # сообщение: "Число загадано"
 @app.route('/')
 def main_page():
+    Riddler.new_number(100)
     return 'Число загадано !!!'
 
 # Пользователь по POST запросе на адрес /guess
@@ -45,35 +68,28 @@ class ContactForm(Form):
 
 @app.route('/guess', methods=['POST'])
 def guess():
-    def secret_gen(seed = 1, new_value = False):
-        seed = seed
-        secret_int = [12]
-        if new_value:
-            secret_int[0] = randint(0,100)
-
-
-        print(secret_int)
-        return secret_int[0]
+    if Riddler.number == None:
+        return 'число не задано!!!'
 
     if request.method == 'POST':
-        print(request.form)
+        # print(request.form)
         form = ContactForm(request.form)
-        print(form.validate())
+        # print(form.validate())
 
         if form.validate():
             guess_array = {'user_var': request.form['number'],
                            'symbol' : None,
                            'message' : None}
 
-            if int(guess_array['user_var']) > secret_gen():
+            if int(guess_array['user_var']) > Riddler.number:
                 guess_array['symbol'] = '>'
-            elif int(guess_array['user_var']) < secret_gen():
+            elif int(guess_array['user_var']) < Riddler.number:
                 guess_array['symbol'] = '<'
             else:
                 # secret_int # удаляем текущее значение секретного значения, тем самым меняем его на следующее
                 guess_array['message'] = '"New secret value"'
                 guess_array['symbol'] = '='
-                secret_gen(new_value=True)
+                Riddler.new_number(100)
 
 
             return '{} {} secret {}'.format(guess_array['user_var'], guess_array['symbol'], guess_array['message'] if guess_array['message'] != None else ' ')
